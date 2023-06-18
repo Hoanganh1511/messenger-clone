@@ -65,13 +65,11 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
       return NextResponse.json(conversation);
     }
-    console.log(4);
     await pusherServer.trigger(
       conversationId!,
       "message:update",
       updatedMessage
     );
-    console.log(5);
     return new NextResponse("Success");
   } catch (error: any) {
     console.log("ERROR_MESSAGES_SEEN", error);
