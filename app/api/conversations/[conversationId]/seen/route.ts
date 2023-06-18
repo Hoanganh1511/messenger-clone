@@ -27,7 +27,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         users: true,
       },
     });
-
+    console.log(1);
     if (!conversation) {
       return new NextResponse("Invalid ID", { status: 400 });
     }
@@ -38,7 +38,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     if (!lastMessage) {
       return NextResponse.json(conversation);
     }
-
+    console.log(2);
     // Update seen of last message
     const updatedMessage = await prisma?.message.update({
       where: {
@@ -56,7 +56,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
         },
       },
     });
-
+    console.log(3);
     await pusherServer.trigger(currentUser.email, "conversation:update", {
       id: conversationId,
       messages: [updatedMessage],
@@ -65,14 +65,14 @@ export async function POST(request: Request, { params }: { params: IParams }) {
     if (lastMessage.seenIds.indexOf(currentUser.id) !== -1) {
       return NextResponse.json(conversation);
     }
-
+    console.log(4);
     await pusherServer.trigger(
       conversationId!,
       "message:update",
       updatedMessage
     );
-
-    return NextResponse.json(updatedMessage);
+    console.log(5);
+    return new NextResponse("Success");
   } catch (error: any) {
     console.log("ERROR_MESSAGES_SEEN", error);
     return new NextResponse("Internal Error", { status: 500 });
