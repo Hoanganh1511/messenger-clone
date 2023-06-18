@@ -32,7 +32,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [router, conversationId, onClose]);
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div
